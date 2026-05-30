@@ -10,15 +10,12 @@ const CONFIRMATION = "ac333ea1";
 app.post("/callback", (req, res) => {
     console.log("VK EVENT:", req.body);
 
-    const event = req.body;
-
-    if (event.type === "confirmation") {
+    if (req.body.type === "confirmation") {
         return res.send("ac333ea1");
     }
 
     return res.send("ok");
 });
-
 app.get("/", (req, res) => {
     res.send("VK bridge is running");
 });

@@ -1,58 +1,28 @@
 const express = require("express");
-const axios = require("axios");
 
 const app = express();
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
-// временный тестовый webhook
-const BOTPRESS_WEBHOOK = "https://httpbin.org/post";
+const CONFIRMATION = "ac333ea1";
 
-// VK токен (позже заменим)
-const VK_TOKEN = "PASTE_VK_TOKEN_HERE";
+app.post("/callback", (req, res) => {
+    console.log("VK EVENT:", req.body);
 
-// VK confirmation
-const CONFIRMATION = "f1ee9ecd";
-
-app.post("/callback", async (req, res) => {
     const event = req.body;
 
     if (event.type === "confirmation") {
-        return res.send(CONFIRMATION);
+        return res.send("ac333ea1");
     }
 
-    if (event.type === "message_new") {
-        const msg = event.object;
-        const userId = msg.from_id;
-        const text = msg.text;
+    return res.send("ok");
+});
 
-        try {
-            await axios.post(BOTPRESS_WEBHOOK, {
-                userId,
-                text
-            });
-
-            await axios.post("https://api.vk.com/method/messages.send", null, {
-                params: {
-                    access_token: VK_TOKEN,
-                    user_id: userId,
-                    message: "Я получил твоё сообщение 👍",
-                    random_id: Date.now(),
-                    v: "5.199"
-                }
-            });
-
-        } catch (err) {
-            console.log(err.message);
-        }
-
-        return res.send("ok");
-    }
-
-    res.send("ok");
+app.get("/", (req, res) => {
+    res.send("VK bridge is running");
 });
 
 app.listen(PORT, () => {
-    console.log("VK bridge started on port 3000");
+    console.log("VK bridge started on port", PORT);
 });

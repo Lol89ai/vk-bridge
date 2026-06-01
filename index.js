@@ -27,50 +27,48 @@ app.post("/callback", async (req, res) => {
     }
 
     // входящее сообщение
-    if (event.type === "message_new") {
-        const msg = event.object.message;
-        const userId = msg.from_id;
+   if (event.type === "message_new") {
+    const msg = event.object.message;
+    const userId = msg.from_id;
 
-        try {
-            // отправляем сообщение в Botpress
-            const bp = await axios.post(BOTPRESS_WEBHOOK, {
-                userId: String(userId),
-                text: msg.text
-            });
-            console.log("BOTPRESS FULL:", JSON.stringify(bp.data, null, 2));
+    const text = msg.text.toLowerCase();
 
-            let answer = "Я не получил ответ от AI 😔";
+    let answer = "Я не понял запрос 🤔 Попробуй спросить про питание или калории.";
 
-            // пытаемся достать ответ Botpress
-            if (bp.data) {
-                if (bp.data.responses && bp.data.responses[0]) {
-                    answer = bp.data.responses[0].text;
-                } else if (typeof bp.data === "string") {
-                    answer = bp.data;
-                }
-            }
-
-            // отправляем ответ в VK
-            await axios.post("https://api.vk.com/method/messages.send", null, {
-                params: {
-                    access_token: VK_TOKEN,
-                    user_id: userId,
-                    message: answer,
-                    random_id: Date.now(),
-                    v: "5.199"
-                }
-            });
-
-        } catch (err) {
-            console.log("BOT ERROR:", err.message);
-        }
-
-        return res.send("ok");
+    // приветствие
+    if (text.includes("привет")) {
+        answer = "Привет! 😊 Я твой AI-нутрициолог. Могу помочь с питанием, калориями и рационом.";
     }
 
-    return res.send("ok");
-});
+    // калории
+    else if (text.includes("калори")) {
+        answer = "Чтобы посчитать калории, напиши: что ты ел сегодня — я разберу рацион 👍";
+    }
 
-app.listen(PORT, () => {
-    console.log("VK bridge started on port", PORT);
-});
+    // похудение
+    else if (text.includes("похуд")) {
+        answer = "Для похудения важно: дефицит калорий, белок в каждом приёме пищи и регулярность питания 💪";
+    }
+
+    // питание / диета
+    else if (text.includes("диет") || text.includes("питани")) {
+        answer = "Я помогу составить тебе рацион 😊 Напиши свой рост, вес и цель.";
+    }
+
+    // вода
+    else if (text.includes("вода")) {
+        answer = "Рекомендуется пить 30–35 мл воды на 1 кг веса в день 💧";
+    }
+
+    await axios.post("https://api.vk.com/method/messages.send", null, {
+        params: {
+            access_token: VK_TOKEN,
+            user_id: userId,
+            message: answer,
+            random_id: Date.now(),
+            v: "5.199"
+        }
+    });
+
+    return res.send("ok");
+}

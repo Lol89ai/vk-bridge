@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 
 // VK токен (лучше потом перенести в ENV)
 const VK_TOKEN = "vk1.a.5n4ah8tnPzX5XncHNAICL5plIHgbErbJdwEd2efaGkn8jwtIM3Y43THqJxxyqKHjXtEvTq-wSoLrzAJYgWlgPYGtbnvkHbG4-_icoNiuyY5Pa-ip6tTipTk8abjSaAYqDyy0yl7gB-vmDhzD2Eobx_spv7drMSeQNet7Ff5TcNCte7E5ZaXtQpgi0XB1cWywo5Eq49qw3KgmMk3XLiprMA";
-
+const BOTPRESS_WEBHOOK = "https://webhook.botpress.cloud/f00e4def-bbef-4512-8a41-0dee5148f1ad";
 // подтверждение сервера VK
 const CONFIRMATION = "ac333ea1";
 
@@ -40,6 +40,7 @@ app.post("/callback", async (req, res) => {
                 userId: String(userId),
                 text: msg.text
             });
+            console.log("BOTPRESS RAW:", bp.data);
 
             let answer = "Я не получил ответ от AI 😔";
 

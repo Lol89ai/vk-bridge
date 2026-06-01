@@ -75,12 +75,12 @@ app.post("/callback", async (req, res) => {
             console.log("VK SEND ERROR:", err.message);
         }
 
-        return res.send("ok");
-    }
+       return res.send("ok");
+} // закрывает if (message_new)
 
-    return res.send("ok");
-});
+return res.send("ok");
+}); // закрывает app.post("/callback")
 
 app.listen(PORT, () => {
     console.log("VK bridge started on port", PORT);
-}});
+});

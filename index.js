@@ -37,7 +37,7 @@ app.post("/callback", async (req, res) => {
                 userId: String(userId),
                 text: msg.text
             });
-            console.log("BOTPRESS RAW:", bp.data);
+            console.log("BOTPRESS FULL:", JSON.stringify(bp.data, null, 2));
 
             let answer = "Я не получил ответ от AI 😔";
 

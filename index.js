@@ -12,9 +12,6 @@ const BOTPRESS_WEBHOOK = "https://webhook.botpress.cloud/f00e4def-bbef-4512-8a41
 // подтверждение сервера VK
 const CONFIRMATION = "ac333ea1";
 
-// Botpress webhook
-const BOTPRESS_WEBHOOK = "https://webhook.botpress.cloud/f00e4def-bbef-4512-8a41-0dee5148f1ad";
-
 app.get("/", (req, res) => {
     res.send("VK bridge is running");
 });

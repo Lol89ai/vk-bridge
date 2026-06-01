@@ -83,4 +83,4 @@ app.post("/callback", async (req, res) => {
 
 app.listen(PORT, () => {
     console.log("VK bridge started on port", PORT);
-});
+}});

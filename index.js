@@ -60,7 +60,7 @@ app.post("/callback", async (req, res) => {
         answer = "Рекомендуется пить 30–35 мл воды на 1 кг веса в день 💧";
     }
 
-        await axios.post("https://api.vk.com/method/messages.send", null, {
+            await axios.post("https://api.vk.com/method/messages.send", null, {
         params: {
             access_token: VK_TOKEN,
             user_id: userId,
@@ -71,7 +71,7 @@ app.post("/callback", async (req, res) => {
     });
 
     return res.send("ok");
-});
+}); // 👈 ЗАКРЫВАЕТ app.post
 
 app.listen(PORT, () => {
     console.log("VK bridge started on port", PORT);
